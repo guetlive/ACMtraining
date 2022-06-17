@@ -1,0 +1,32 @@
+/*
+*问题描述：级数的求和
+
+*解题方法：求f(x)的近似值，先用f(x)-f(1)把每一项都写出来，提出分母中的1/k,剩下的合成一个分式(x-1)/(k+1)(k+x)
+再利用第二个提示当k趋于无穷时近似值可以用积分来求。在这里k取10000
+
+出错次数：很多次
+
+*出错原因：精度不够，方法不对
+
+*心得体会：照着公式求会导致精度不够
+
+
+*/
+
+#include<iostream>
+#include <iomanip>
+using namespace std;
+int main()
+{
+	double sum;
+	for (double i = 0; i < 2.0; i = i + 0.001)
+	{
+		sum = 0;
+		for (int k = 1; k < 10000; k++)
+		{
+			sum = sum + 1.0 / (k * (k + i) * (k + 1));
+		}
+		sum = (1 - i) * sum + (1.0 - i) / (2 * 10000 * 10000) + 1.0;
+		cout << fixed << setprecision(3) << i << "   " << fixed << setprecision(12) << sum << endl;
+	}
+}
