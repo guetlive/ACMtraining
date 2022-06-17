@@ -1,0 +1,43 @@
+/*
+*问题描述：输入两个队的得分总和以及分差，求两个队的分数且分数大的输出在前，如果输入不合法则输出impossible
+
+*解题法1：设输入的总数总和为s，分差为d，两队的分数分别为a和b
+则有： a+b=s
+       a-b=d
+推出： 2a=s+d 则a=（s+d）/2
+       2b=s-d 则b=(s-d)/2
+       
+ *出错次数：1
+ 用C++写显示提交显示presentation error，格式不对，在clion上能跑通，查了是cin输入的问题，cin平台自动测试不能想手动一样打空格而是直接回车了造成输入格式不对
+ 改用c写就通过了
+ 心得体会：问题比较简单，就是代码格式出了问题
+*/
+
+#include<stdio.h>
+
+int main(){
+
+    int n;
+    int i;
+    int s, d;
+    int a, b;
+
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++){
+
+        scanf("%d %d", &s, &d);
+
+        a = s + d;
+        b = s - d;
+
+        if(a < 0 || b < 0 || a % 2 != 0 || b % 2 != 0){
+            printf("impossible\n");
+        }
+        else{
+            printf("%d %d\n", a / 2, b / 2);
+        }
+    }
+
+    return 0;
+}
