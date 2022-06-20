@@ -1,0 +1,48 @@
+/*
+*问题描述：求出一行字符串的逆序数，再按逆序数从小到大排列各行
+
+*解题方法：采用循环比较得出个行字符串的逆序数，再用冒泡排序排列个逆序数，按逆序数从小到大输出各行字符串
+
+*出错次数：
+
+*出错原因：value值没处理好
+
+*心得体会：还是采用排列算法
+
+
+*/
+
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct DNA{
+  string s;    
+  int value;
+};
+
+int cmp(const DNA *a, const DNA *b)  
+{  
+     return (a->value-b->value);  
+}   
+
+int main()
+{
+    int n,m;
+    while(cin>> m >>n)
+    {
+         DNA it[n];     
+         for(int i=0;i!=n;i++)
+         {
+            cin >> it[i].s;
+            it[i].value = 0;
+            for(int j=0;j!=m;j++)
+                for(int k=j+1;k!=m;k++)
+                     if(it[i].s[j]>it[i].s[k])   it[i].value++;// 记录每行的逆序数 
+         }
+         qsort(it,n,sizeof(DNA), (int (*)(const void *, const void *))cmp);// 有逆序数从小到大排列各行位置 
+         for(int i=0;i!=n;i++)
+              cout << it[i].s <<endl ;             
+    }
+    return 0;   
+}
