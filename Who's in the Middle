@@ -1,0 +1,65 @@
+/*
+*描述问题：找中位数
+
+*解题方法：用quicksort排序一遍，再找出中位数
+
+*出错次数：4
+
+*出错原因：传入参数不对以及数组下标出错的问题
+
+*心得体会：本问题主要考的是排序问题，要熟练掌握排序的各种算法，当然也要注意算法的时间复杂度，像冒泡排序就不行
+
+
+
+
+
+*/
+
+#include<iostream>
+using namespace std;
+const int maxn=10010;
+int data[maxn];
+
+void quick_sort(int *num,int l,int r)
+ {
+	//如果小于等于1个数据元素·直接返回结束快排函数 r为数组元素总个数
+	if(l+1>=r)
+	{
+		return ;
+	}
+	int first=l,last=r-1,key=num[first];
+	while(first<last)
+	{
+		while(first<last&&num[last]>=key)
+		{
+			--last;
+		}
+		//如果值小于 key分界值 交换 
+		num[first]=num[last];
+		while(first<last&&num[first]<key)
+		{
+			++first;
+		}
+		//如果值大于key分界值 交换 
+		num[last]=num[first];
+	}
+	num[first]=key;
+	//递归左右部分进行快排 
+	quick_sort(num,l,first);
+	quick_sort(num,first+1,r);
+}
+
+int main()
+{
+	int n,i;
+	while(cin>>n)
+	{
+		for(i=0;i<n;i++)
+		{
+			cin>>data[i];
+		}
+		quick_sort(data,0,n);
+		cout<<data[n/2]<<endl;
+	}
+	return 0;
+}
