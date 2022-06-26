@@ -1,1 +1,62 @@
+/*
+*描述问题：输入一个数n，之后输入n个数进行升序排列，求使用Ultra-QuickSort 需要执行多少交换操作才能对给定的输入序列进行排序
 
+*解题方法：使用归并排序，并设置变量记录它的交换次数即逆序数
+
+*提交状态：AC
+
+*AC结果：Memory：7776 Time：3297MS
+
+*出错次数：
+
+*出错原因：对归并排序步数，没能一下子写出来
+
+*心得体会：
+
+*/
+#include <iostream>
+#define SIZE 500005
+using namespace std;
+long long  a[SIZE], temp[SIZE];
+/**************归并算法**************/
+long long cnt = 0;
+void merge(long long *a, long long *temp, int first, int mid, int last){
+	int i = first, j = mid + 1;
+	int index = first;
+	while (i <= mid&&j <= last){
+		if (a[i] > a[j]){
+			temp[index++] = a[j];
+			j++;
+			cnt = cnt + mid - i + 1;          //计算逆序对
+		}
+		else{
+			temp[index++] = a[i];
+			i++;
+		}
+	}
+	while (i <= mid)
+		temp[index++] = a[i++];
+	while (j <= last)
+		temp[index++] = a[j++];
+	for (int i = first; i <= last; i++)
+		a[i] = temp[i];
+}
+void mergeSort(long long *a, long long *temp, int first, int last){
+	if (first >= last)
+		return;
+	int mid = (first + last) / 2;
+	mergeSort(a, temp, first, mid);
+	mergeSort(a, temp, mid + 1, last);
+	merge(a, temp, first, mid, last);
+}
+ 
+int main()
+{
+	int n;
+	while (cin >> n&&n){
+		for (int i = 1; i <= n; i++)cin >> a[i];
+		cnt = 0;
+		mergeSort(a, temp, 1, n);
+		cout << cnt << endl;
+	}
+}
