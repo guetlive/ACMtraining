@@ -1,1 +1,77 @@
+/*
+*问题描述：
+
+*解题方法：
+
+*提交状态：AC
+
+*AC结果：
+Memory：688K 
+Time：32MS
+
+*出错次数：
+
+*出错原因：
+
+*心得体会：
+
+
+*/
+//#include<bits/stdc++.h>
+#include<iostream>
+#include<cmath>
+#include<string.h>
+#include<algorithm>
+
+using namespace std;
+/*
+DFS+剪枝
+遍历所有木棒的可能长度，直到符合条件
+*/
+int num[70];
+bool vis[70];
+int n, cnt, len;
+
+bool DFS(int stick, int cab, int last) {
+    if (stick > cnt)return true;
+    if (cab == len)return DFS(stick + 1, 0, 1);
+    int fail = 0;//剪枝: 避免访问多次相同长度的木条
+    for (int i = last; i <= n; i++) {
+        if (!vis[i] && cab + num[i] <= len && fail != num[i]) {
+            vis[i] = 1;
+            fail = num[i];
+            if (DFS(stick, cab + num[i], i + 1))return true;//为什么是 i+1
+            vis[i] = 0;
+            if (cab == 0 || cab + num[i] == len)return false;
+            //剪枝：1.当一根木条不能作为木棒的第一块，那么其他的也不行
+            //      2.当用一根木条无法拼接成功木棒时，其他若干根也不行 (作为木棒的最后一块时)
+        }
+    }
+    return false;
+}
+
+int main() {
+    while (true) {
+        memset(vis, 0, sizeof(vis));
+        cin >> n;
+        int val = 0;
+        if (n == 0)break;
+        for (int i = 1; i <= n; i++) {
+            cin >> num[i];
+            val += num[i];
+        }
+        sort(num + 1, num + n + 1);
+        reverse(num + 1, num + 1 + n);
+        for (int i = num[1]; i <= val; i++) {
+            if (val % i)continue;
+            cnt = val / i;
+            len = i;//当前选择的木棒长度
+            if (DFS(1, 0, 1)) {
+                cout << len << endl;//当前拼接第i根木棒，长度为j，选择的是dik个小木棒
+                break;
+            }
+        }
+    }
+    return 0;
+}
 
