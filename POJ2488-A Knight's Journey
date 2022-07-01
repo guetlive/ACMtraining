@@ -1,0 +1,79 @@
+/*
+*问题描述：
+
+*解题方法：
+
+*提交状态：AC
+
+*AC结果：
+Memory：688K 
+Time：32MS
+
+*出错次数：
+
+*出错原因：
+
+*心得体会：
+
+
+*/
+#include<iostream>
+#include<cstring>
+#include<vector>
+#include<utility>
+using namespace std;
+int P,Q,dir[8][2]={{-2,-1},{-2,1},{-1,-2},{-1,2},
+		{1,-2},{1,2},{2,-1},{2,1}};//方向按从左至右，从上至下依次搜索 
+bool vis[26][26];
+vector<pair<int,int> >path;//存储已走的路径 
+ 
+bool dfs(int x,int y)
+{
+	vis[x][y]=true;
+	path.push_back(make_pair(x,y));
+	
+	if(path.size()==P*Q) return true;//已走遍棋盘上所有方格
+	
+	for(int i=0;i<8;i++)
+	{
+		int nx=x+dir[i][0],ny=y+dir[i][1];
+		if(nx>=0&&nx<Q&&ny>=0&&ny<P&&!vis[nx][ny])
+		{
+			if(dfs(nx,ny))
+				return true;
+		}
+	}
+    //不能走遍则改变当前路径
+	vis[x][y]=false;
+	path.pop_back();
+	return false;
+}
+ 
+int main()
+{
+	int n,k=1;
+	cin>>n;
+	while(n--)
+	{
+		memset(vis,0,sizeof(vis));
+		path.clear();
+		
+		cin>>P>>Q;
+		printf("Scenario #%d:\n",k++);
+		if(!dfs(0,0))//从A1方格开始搜索 
+		{
+			cout<<"impossible"<<endl;
+		}
+		else
+		{
+			for(int i=0;i<path.size();i++)
+			{
+				int x=path[i].first,y=path[i].second;
+				cout<<(char)('A'+x)<<(y+1);
+			}
+			cout<<endl;
+		}
+		cout<<endl;
+	}
+	return 0;
+} 
