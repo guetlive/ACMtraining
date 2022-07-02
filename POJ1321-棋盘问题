@@ -17,3 +17,49 @@ Time：32MS
 
 
 */
+#include<iostream>
+#include <algorithm>
+#include <string.h>
+using namespace std;
+int visit[20];
+ char mp[20][20];
+  int ans;//ans表示方案数
+ int k;//k表示棋子数目
+ int n;//n表示棋盘的大小
+ int DFS(int x,int y)
+ {
+    if(y>=k)//判断是否棋子已经用完，如果用完，记录方案数加1,然后直接返回0
+    {
+         ans++;
+       return 0;
+    }
+     for(int i=x;i<n;i++)
+     {
+       for(int j=0;j<n;j++)
+        {
+            if(!visit[j]&&mp[i][j]=='#')//标记数组仅仅标记某一列上是否有棋子，因为每次递归下一列，所以每一列不会有冲突，只需判断这一列上是否有其他棋子
+             {
+                 visit[j]=true;//如果该位置该列没被标记且为棋盘，那么在这里放上棋子，并标记，
+                 DFS(i+1,y+1);//搜索下一列
+                visit[j]=false;//还要注意修改标记后递归回来要及时复原
+            }
+        }
+     }
+     return 0;
+ }
+ int main()
+ {
+   while(cin>>n>>k)
+    {
+         if(n==-1&&k==-1)
+             break;
+        memset(visit,false,sizeof(visit));
+         memset(mp,false,sizeof(mp));
+         for(int i=0;i<n;i++)
+           cin>>mp[i];
+         ans=0;
+        DFS(0,0);
+         cout<<ans<<endl;
+     }
+     return 0;
+}
