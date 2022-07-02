@@ -17,3 +17,80 @@ Time：32MS
 
 
 */
+#include <iostream>
+#include <stdlib.h>
+#include <algorithm>
+#define  MAX_NUM 21
+using namespace std;
+
+int H, W;
+int dire[4][2] = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };   //定义四个方向
+int minNum = INT_MAX;
+
+void DFS(int map[][MAX_NUM], int x, int y, int step) {     //深搜
+    if (step >= 10)                                        //超过10次直接退出
+    {
+        return;
+    }
+    for (int i = 0; i < 4; i++)                            //四个方向进行深搜
+    {
+        int k = x + dire[i][0]; 
+        int v = y + dire[i][1];
+        if (map[k][v] == 1)                                //如果该方向第一个就是障碍物，下个方向
+        {
+            continue;
+        }
+        while (!map[k][v])                                 //找到停止的位置
+        {
+            k += dire[i][0];
+            v += dire[i][1];
+        }
+        if (k >= 0 && k < H && v >=0 && v < W)             //判断是否越界
+        {
+            if (map[k][v] == 1)                            //如果是障碍物，则破碎，继续深搜
+            {
+                map[k][v] = 0;
+                DFS(map, k - dire[i][0], v - dire[i][1], step + 1);
+                map[k][v] = 1;                             //回溯要复原原来的场景
+            }
+
+            if (map[k][v] == 3)
+            {
+                minNum = step + 1 < minNum ? step + 1 : minNum;
+            }
+        }
+        
+    }
+}
+
+int main()
+{
+    int sx, sy, map[MAX_NUM][MAX_NUM];
+    while (cin >> W >> H&& W && H)
+    {
+        for (int i = 0; i < H; i ++)
+        {
+            for (int j = 0; j < W; j++)
+            {
+                cin >> map[i][j];
+                if (map[i][j] == 2)
+                {
+                    map[i][j] = 0;
+                    sx = i;
+                    sy = j;
+                }
+            }
+        }
+        minNum = INT_MAX;
+        DFS(map, sx, sy, 0);
+        if (minNum < INT_MAX)
+        {
+            cout << minNum << endl;
+        }
+        else
+        {
+            cout << -1 << endl;
+        }
+    }
+    return 0;
+}
